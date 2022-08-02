@@ -1,0 +1,54 @@
+<style>
+  * {
+    transition: .7s ease-in;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    padding: 50px;
+  }
+
+  .expanding-container {
+    width: 100%;
+    height: 500px;
+    display: flex;
+    gap: 30px;
+  }
+
+  .expanding-item {
+    flex: 1;
+    border-radius: 50px;
+    cursor: pointer;
+    background: url('https://images.unsplash.com/photo-1558979158-65a1eaa08691?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+  }
+
+  .active {
+    flex: 10;
+  }
+</style>
+
+<div class="expanding-container">
+  <div class="expanding-item active"></div>
+  <div class="expanding-item"></div>
+  <div class="expanding-item"></div>
+  <div class="expanding-item"></div>
+  <div class="expanding-item"></div>
+  <div class="expanding-item"></div>
+</div>
+<script>
+  const expandingItems = document.querySelectorAll('.expanding-item')
+
+  document.querySelector('.expanding-container').addEventListener('click', e => {
+    if (e.target.classList.contains('expanding-item')) {
+      expandingItems.forEach(item => {
+        item.classList.remove('active')
+      })
+
+      e.target.classList.add('active')
+    }
+
+  })
+
+</script>

@@ -1,0 +1,138 @@
+<style>
+  * {
+    box-sizing: border-box;
+    transition: .5s ease;
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .progress-wrapper {
+    width: 400px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .progress-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 2px;
+    background: #eaeaea;
+    z-index: 0;
+  }
+
+  .progress-bar {
+    background: skyblue;
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 2px;
+    width: 0;
+  }
+
+  .progress-step {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    background: #fff;
+    line-height: 24px;
+    border-radius: 50%;
+    border: 3px solid #ccc;
+    z-index: 2;
+  }
+
+  .btn-group {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .active {
+    border-color: skyblue;
+  }
+</style>
+
+<div class="progress-wrapper">
+  <div class="progress-step">1</div>
+  <div class="progress-step">2</div>
+</div>
+<div class="btn-group">
+  <button class="prev-btn">prev</button>
+  <button class="next-btn">next</button>
+</div>
+<script>
+  let currentStep = 1
+  let totalStep = 4
+
+  const wrapper = document.querySelector('.progress-wrapper')
+  const prevBtn = document.querySelector('.prev-btn')
+  const nextBtn = document.querySelector('.next-btn')
+
+  const initProgressSteps = () => {
+    wrapper.innerHTML = `
+    <div class="progress-bar" style="width:${(currentStep - 1) / (totalStep - 1) * 100}%"></div>
+    ${Array.from({ length: totalStep }, (_, i) => {
+      return `
+      <div class="progress-step">${i + 1}</div>
+      `
+    }).join('')}
+    `
+    updateProgressItem()
+  }
+
+  const updateProgressItem = () => {
+    const progressItems = document.querySelectorAll('.progress-step')
+    const progressBar = document.querySelector('.progress-bar')
+
+    progressBar.style.width = `${(currentStep - 1) / (totalStep - 1) * 100}%`
+    progressItems.forEach((item, index) => {
+      if (index + 1 <= currentStep) {
+        item.classList.add('active')
+      } else {
+        item.classList.remove('active')
+      }
+    })
+
+  }
+
+  const updateContent = () => {
+    prevBtn.disabled = currentStep === 1
+    nextBtn.disabled = currentStep === totalStep
+
+    updateProgressItem()
+  }
+
+  const changeCurrentStep = (step) => {
+    currentStep += step
+    updateContent()
+  }
+
+  prevBtn.addEventListener('click', () => {
+    changeCurrentStep(-1)
+  })
+
+  nextBtn.addEventListener('click', () => {
+    changeCurrentStep(1)
+  })
+
+  initProgressSteps()
+</script>
